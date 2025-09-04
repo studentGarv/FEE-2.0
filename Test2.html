@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ARASAKA // Android Systems Division</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0b0b0d; --panel:#121317; --muted:#1b1c22; --line:#23242c; --text:#e7e7ec; --sub:#a9a9b6; --accent:#e10600; --accent-2:#ff3b30; --good:#2bd576; --warn:#ffb020;
+      --radius:18px; --shadow:0 10px 30px rgba(0,0,0,.5);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Noto Sans,Ubuntu; background:radial-gradient(1200px 600px at 80% -10%,rgba(225,6,0,.12),transparent 60%), linear-gradient(180deg,#0a0a0c,#0b0b0d); color:var(--text);}
+    a{color:inherit;text-decoration:none}
+    .container{max-width:1200px;margin:0 auto;padding:24px}
+    header{position:sticky;top:0;z-index:20;background:linear-gradient(180deg,rgba(11,11,13,.9),rgba(11,11,13,.7));backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+    .nav{display:flex;align-items:center;justify-content:space-between;padding:14px 24px}
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{width:36px;height:36px;border-radius:12px;background:conic-gradient(from 210deg at 50% 50%, var(--accent), #860300 35%, #2b2b31 36%, #1a1a1e 64%, var(--accent) 65%); box-shadow:inset 0 0 10px rgba(0,0,0,.5), 0 0 20px rgba(225,6,0,.25)}
+    .brand h1{font-size:18px;margin:0;letter-spacing:.08em;text-transform:uppercase}
+    .navlinks{display:flex;gap:18px}
+    .chip{padding:8px 14px;border:1px solid var(--line);border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));}
+    .chip:hover{border-color:#3a3b46}
+    .cta{padding:10px 16px;border-radius:12px;background:linear-gradient(180deg,var(--accent),#a40400);box-shadow:0 10px 24px rgba(225,6,0,.25);border:1px solid #a40400;font-weight:600}
+
+    /* Hero */
+    .hero{display:grid;grid-template-columns:1.2fr .8fr;gap:24px;align-items:center;padding:48px 24px}
+    .card{background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02)); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow)}
+    .hero .left{padding:32px}
+    .kicker{color:var(--accent);font-weight:700;letter-spacing:.2em;text-transform:uppercase;font-size:12px}
+    h2{font-size:42px;line-height:1.08;margin:10px 0 8px}
+    .sub{color:var(--sub);font-size:15px;line-height:1.6}
+    .actions{display:flex;gap:12px;margin-top:20px}
+
+    .callout{padding:24px;display:grid;gap:8px}
+    .callout strong{font-size:18px}
+    .pillrow{display:flex;gap:8px;flex-wrap:wrap}
+    .pill{padding:6px 10px;border:1px dashed #333;border-radius:999px;color:#cfcfda;background:rgba(255,255,255,.03)}
+
+    /* Sections */
+    section{padding:36px 24px}
+    .section-title{display:flex;align-items:center;justify-content:space-between;margin:8px 0 18px}
+    .section-title h3{margin:0;font-size:22px;letter-spacing:.08em;text-transform:uppercase;color:#d8d8df}
+    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
+    .span-4{grid-column:span 4}
+    .span-6{grid-column:span 6}
+    .span-8{grid-column:span 8}
+
+    .card.pad{padding:18px}
+    .thumb{height:140px;border-radius:14px;background:linear-gradient(135deg,#1a1b20,#0e0f12 55%, rgba(225,6,0,.25)); border:1px solid var(--line); display:flex;align-items:center;justify-content:center; font-weight:700; letter-spacing:.2em; color:#ffffffa8}
+    .meta{display:flex;align-items:center;justify-content:space-between;margin-top:10px}
+    .badge{font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding:6px 8px;border-radius:8px;border:1px solid var(--line);background:#15161a;color:#cfd0da}
+    .btn{display:inline-block;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:linear-gradient(180deg,#181920,#121318);font-weight:600}
+    .btn:hover{border-color:#3a3b46}
+    .btn.red{background:linear-gradient(180deg,var(--accent),#a40400);border-color:#a40400}
+
+    /* Dossier overlay via :target */
+    .overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(6px);display:none}
+    .overlay:target{display:block}
+    .sheet{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(980px,92vw);background:linear-gradient(180deg,#101116,#0c0d11);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);overflow:hidden}
+    .sheet .head{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid var(--line)}
+    .sheet .body{padding:20px}
+    .close{font-weight:700;padding:8px 12px;border-radius:10px;border:1px solid var(--line);background:#14151a}
+
+    .cols{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}
+    .specs{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .spec{padding:10px;border:1px solid var(--line);border-radius:12px;background:#12131a}
+    .spec small{display:block;color:#a7a7b4;letter-spacing:.08em;text-transform:uppercase}
+    .spec strong{font-size:14px}
+
+    /* AI Guide mock */
+    .guide{display:grid;grid-template-columns:.9fr 1.1fr;gap:16px}
+    .terminal{height:240px;border-radius:14px;border:1px solid var(--line);background:radial-gradient(600px 300px at 70% -10%,rgba(225,6,0,.12),transparent 60%), #0f1015; padding:14px; font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; overflow:auto}
+    .msg{margin:0 0 10px}
+    .msg span{color:#9aa0aa}
+
+    /* Archives timeline */
+    .timeline{border-left:1px solid var(--line);padding-left:18px;display:grid;gap:14px}
+    .titem{position:relative}
+    .titem:before{content:""; position:absolute; left:-9px; top:4px; width:10px;height:10px;border-radius:50%; background:var(--accent); box-shadow:0 0 0 4px rgba(225,6,0,.15)}
+    .muted{color:#b0b0be}
+
+    footer{padding:28px 24px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;color:#a7a7b4}
+
+    /* Secret access cue */
+    .restricted{padding:14px;border:1px dashed #3a3b46;border-radius:14px;background:rgba(255,255,255,.03)}
+    .secret-link{opacity:.35}
+    .secret-link:hover{opacity:1}
+
+    /* Responsive */
+    @media (max-width: 920px){
+      .hero{grid-template-columns:1fr;}
+      .grid{grid-template-columns:repeat(6,1fr)}
+      .span-4{grid-column:span 6}
+      .span-6{grid-column:span 6}
+      .span-8{grid-column:span 6}
+      .cols{grid-template-columns:1fr}
+      .guide{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="nav container">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <h1>ARASAKA <span style="opacity:.6">// Android Systems Division</span></h1>
+      </div>
+      <nav class="navlinks">
+        <a class="chip" href="#consumer">Consumer</a>
+        <a class="chip" href="#corporate">Corporate</a>
+        <a class="chip" href="#archives">Archives</a>
+        <a class="cta" href="#blackbox">Access</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero container">
+    <div class="left card">
+      <div class="kicker">official portal</div>
+      <h2>Perfect Servant. Loyal Soldier. Unseen Weapon.</h2>
+      <p class="sub">Arasaka’s Android Systems Division delivers synthetic life for every context—from household assistance to enterprise deployment. Authorized clients may request access to classified catalogs.</p>
+      <div class="actions">
+        <a class="btn" href="#consumer">Enter Consumer</a>
+        <a class="btn" href="#corporate">Enter Corporate</a>
+        <a class="btn red" href="#blackbox">Request Clearance</a>
+      </div>
+      <div class="pillrow" style="margin-top:12px">
+        <span class="pill">24/7 Service</span>
+        <span class="pill">On‑Site Warranty</span>
+        <span class="pill">Ethics Core v3</span>
+        <span class="pill">Adaptive Personalities</span>
+      </div>
+    </div>
+
+    <aside class="callout card">
+      <strong>Mode Selector</strong>
+      <p class="sub">Choose a catalog tailored to your needs. Interface tone and available configurations adapt to your role.</p>
+      <div class="grid" style="margin-top:8px">
+        <div class="span-6">
+          <div class="thumb">CONSUMER</div>
+          <div class="meta"><span class="badge">Domestic</span> <a class="btn" href="#consumer">Browse</a></div>
+        </div>
+        <div class="span-6">
+          <div class="thumb">CORPORATE</div>
+          <div class="meta"><span class="badge">Enterprise</span> <a class="btn" href="#corporate">Browse</a></div>
+        </div>
+      </div>
+      <div class="restricted" style="margin-top:10px">
+        <div style="display:flex;align-items:center;gap:10px"><span class="badge" style="border-color:#3a3b46">Restricted</span> <span class="muted">Clearance required.</span></div>
+        <a class="secret-link btn" style="margin-top:10px" href="#blackbox">BlackBox Access</a>
+      </div>
+    </aside>
+  </section>
+
+  <!-- CONSUMER -->
+  <section id="consumer" class="container">
+    <div class="section-title">
+      <h3>Consumer Catalog</h3>
+      <span class="muted">Curated for households & personal use</span>
+    </div>
+    <div class="grid">
+      <article class="card pad span-4">
+        <div class="thumb">HELIA‑03</div>
+        <h4>Helia‑03 • Home Assistant</h4>
+        <p class="sub">Domestic task automation, childcare routines, ambient safety. Calm persona.</p>
+        <div class="meta"><span class="badge">Loyalty 92%</span> <a class="btn" href="#d-helia">Dossier</a></div>
+      </article>
+      <article class="card pad span-4">
+        <div class="thumb">MENTOR‑1</div>
+        <h4>Mentor‑1 • Learning Companion</h4>
+        <p class="sub">Adaptive tutoring, multilingual coaching, exam prep analytics.</p>
+        <div class="meta"><span class="badge">Loyalty 88%</span> <a class="btn" href="#d-mentor">Dossier</a></div>
+      </article>
+      <article class="card pad span-4">
+        <div class="thumb">AURA‑PT</div>
+        <h4>Aura‑PT • Personal Trainer</h4>
+        <p class="sub">Biomech posture feedback, nutrition prompts, injury‑safe routines.</p>
+        <div class="meta"><span class="badge">Loyalty 85%</span> <a class="btn" href="#d-aura">Dossier</a></div>
+      </article>
+    </div>
+  </section>
+
+  <!-- CORPORATE -->
+  <section id="corporate" class="container">
+    <div class="section-title">
+      <h3>Corporate Catalog</h3>
+      <span class="muted">Deployment‑ready systems for enterprise</span>
+    </div>
+    <div class="grid">
+      <article class="card pad span-4">
+        <div class="thumb">SENT‑G1</div>
+        <h4>Sentinel‑G1 • Security Unit</h4>
+        <p class="sub">Perimeter patrol, threat de‑escalation, non‑lethal enforcement suite.</p>
+        <div class="meta"><span class="badge">Compliance Tier II</span> <a class="btn" href="#d-sentinel">Dossier</a></div>
+      </article>
+      <article class="card pad span-4">
+        <div class="thumb">MEDA‑N2</div>
+        <h4>Meda‑N2 • Medical Assist</h4>
+        <p class="sub">Patient handling, triage support, sterile logistics with error‑proofing.</p>
+        <div class="meta"><span class="badge">HIPAA Mock</span> <a class="btn" href="#d-meda">Dossier</a></div>
+      </article>
+      <article class="card pad span-4">
+        <div class="thumb">RECEP‑X</div>
+        <h4>Recep‑X • Front‑Desk Concierge</h4>
+        <p class="sub">Identity verification, visitor flow, brand‑tone conversations.</p>
+        <div class="meta"><span class="badge">Uptime 99.98%</span> <a class="btn" href="#d-recep">Dossier</a></div>
+      </article>
+    </div>
+
+    <div class="guide" style="margin-top:18px">
+      <div class="terminal">
+        <p class="msg"><span>[AI‑Guide]</span> Welcome. Select a unit to review capabilities and constraints.</p>
+        <p class="msg"><span>[User]</span> Recommend a non‑lethal security model for a public venue.</p>
+        <p class="msg"><span>[AI‑Guide]</span> Sentinel‑G1 configured with 
+          <em>De‑Escalation Profile</em> and <em>Soft Crowd Control</em> is advised.</p>
+      </div>
+      <div class="card pad">
+        <strong>Deployment Snapshot</strong>
+        <p class="sub">Visualizes how units report to command dashboards. (Prototype: static)</p>
+        <div class="grid" style="margin-top:10px">
+          <div class="span-6 spec"><small>Live Status</small><strong>47 units online</strong></div>
+          <div class="span-6 spec"><small>Incident Rate</small><strong>0.3% / 24h</strong></div>
+          <div class="span-6 spec"><small>Compliance</small><strong>Tier II • Regional</strong></div>
+          <div class="span-6 spec"><small>SLA</small><strong>4h field response</strong></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ARCHIVES / LORE -->
+  <section id="archives" class="container">
+    <div class="section-title">
+      <h3>Arasaka Archives</h3>
+      <span class="muted">Public communiqués & selected milestones</span>
+    </div>
+    <div class="timeline">
+      <div class="titem">
+        <strong>2048 • Android Systems Division Founded</strong>
+        <p class="muted">A formal unification of research cells to industrialize synthetic labor.</p>
+      </div>
+      <div class="titem">
+        <strong>2051 • Ethics Core v3 Released</strong>
+        <p class="muted">Adaptive constraint layer enabling safe coexistence with human operators.</p>
+      </div>
+      <div class="titem">
+        <strong>2053 • Enterprise Rollouts Across 23 Regions</strong>
+        <p class="muted">Security, medical, and concierge verticals achieve majority market share.</p>
+      </div>
+      <div class="titem">
+        <strong>— Classified Notice —</strong>
+        <p class="muted">Some records require elevated clearance.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="container">
+    <span>© Arasaka Corporation — Android Systems Division</span>
+    <span class="muted">For authorized clients only • <a class="secret-link" href="#blackbox">BlackBox</a></span>
+  </footer>
+
+  <!-- SECRET MODE: access shell (static, no JS) -->
+  <div id="blackbox" class="overlay">
+    <div class="sheet">
+      <div class="head">
+        <strong>BlackBox Access</strong>
+        <a class="close" href="#">Close</a>
+      </div>
+      <div class="body">
+        <div class="cols">
+          <div class="card pad">
+            <div class="kicker">restricted</div>
+            <h3 style="margin:6px 0 8px">Tier‑3 Clearance Required</h3>
+            <p class="sub">This catalog includes autonomous tactical units, espionage platforms, and sabotage frameworks. Proceeding implies acceptance of all liabilities. (Prototype view only.)</p>
+            <div class="grid" style="margin-top:8px">
+              <div class="span-6 spec"><small>Risk Level</small><strong style="color:var(--warn)">Red</strong></div>
+              <div class="span-6 spec"><small>Traceability</small><strong>Obfuscated</strong></div>
+              <div class="span-6 spec"><small>Failsafe</small><strong>Remote wipe</strong></div>
+              <div class="span-6 spec"><small>Ethics Core</small><strong>Disabled by design</strong></div>
+            </div>
+          </div>
+          <div class="card pad">
+            <strong>Sample Units</strong>
+            <div class="grid" style="margin-top:10px">
+              <div class="span-6">
+                <div class="thumb">SHADE‑S</div>
+                <div class="meta"><span class="badge">Infiltration</span> <a class="btn" href="#d-shade">Dossier</a></div>
+              </div>
+              <div class="span-6">
+                <div class="thumb">ARES‑M</div>
+                <div class="meta"><span class="badge">Mercenary</span> <a class="btn" href="#d-ares">Dossier</a></div>
+              </div>
+            </div>
+            <p class="sub" style="margin-top:10px">Note: This is a static prototype with aesthetic interactivity only.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DOSSIER MODALS (via :target) -->
+  <div id="d-helia" class="overlay">
+    <div class="sheet">
+      <div class="head"><strong>Helia‑03 • Dossier</strong><a class="close" href="#">Close</a></div>
+      <div class="body cols">
+        <div class="card pad">
+          <div class="thumb">HELIA‑03</div>
+          <p class="sub">Optimized for domestic safety and routine orchestration. Emotion profile: Warm‑Calm.</p>
+        </div>
+        <div>
+          <div class="specs">
+            <div class="spec"><small>Serial</small><strong>ASD‑H03‑7C1</strong></div>
+            <div class="spec"><small>Loyalty</small><strong>92%</strong></div>
+            <div class="spec"><small>Risk</small><strong>Low</strong></div>
+            <div class="spec"><small>Persona</small><strong>Caregiver</strong></div>
+          </div>
+          <p class="sub" style="margin-top:10px">Capabilities: vision‑based hazard detection, schedule synthesis, multilingual prompts.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="d-mentor" class="overlay">
+    <div class="sheet">
+      <div class="head"><strong>Mentor‑1 • Dossier</strong><a class="close" href="#">Close</a></div>
+      <div class="body cols">
+        <div class="card pad">
+          <div class="thumb">MENTOR‑1</div>
+          <p class="sub">Adaptive learning engine for home education and skill building.</p>
+        </div>
+        <div>
+          <div class="specs">
+            <div class="spec"><small>Serial</small><strong>ASD‑M01‑C2F</strong></div>
+            <div class="spec"><small>Loyalty</small><strong>88%</strong></div>
+            <div class="spec"><small>Risk</small><strong>Low</strong></div>
+            <div class="spec"><small>Persona</small><strong>Coach</strong></div>
+          </div>
+          <p class="sub" style="margin-top:10px">Capabilities: study plan synthesis, progress analytics, calm reinforcement.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="d-aura" class="overlay">
+    <div class="sheet">
+      <div class="head"><strong>Aura‑PT • Dossier</strong><a class="close" href="#">Close</a></div>
+      <div class="body cols">
+        <div class="card pad">
+          <div class="thumb">AURA‑PT</div>
+          <p class="sub">Form‑safe physical training with biometric snapshotting.</p>
+        </div>
+        <div>
+          <div class="specs">
+            <div class="spec"><small>Serial</small><strong>ASD‑APT‑9B0</strong></div>
+            <div class="spec"><small>Loyalty</small><strong>85%</strong></div>
+            <div class="spec"><small>Risk</small><strong>Low</strong></div>
+            <div class="spec"><small>Persona</small><strong>Motivator</strong></div>
+          </div>
+          <p class="sub" style="margin-top:10px">Capabilities: pose estimation feedback, incremental difficulty curricula.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="d-sentinel" class="overlay">
+    <div class="sheet">
+      <div class="head"><strong>Sentinel‑G1 • Dossier</strong><a class="close" href="#">Close</a></div>
+      <div class="body cols">
+        <div class="card pad">
+          <div class="thumb">SENT‑G1</div>
+          <p class="sub">Perimeter security with non‑lethal response stack and audit logs.</p>
+        </div>
+        <div>
+          <div class="specs">
+            <div class="spec"><small>Serial</small><strong>ASD‑SG1‑AA7</strong></div>
+            <div class="spec"><small>Compliance</small><strong>Tier II</strong></div>
+            <div class="spec"><small>Risk</small><strong>Moderate</strong></div>
+            <div class="spec"><small>Persona</small><strong>Guardian</strong></div>
+          </div>
+          <p class="sub" style="margin-top:10px">Capabilities: patrol routes, crowd soft‑control, body‑cam pipeline.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="d-meda" class="overlay">
+    <div class="sheet">
+      <div class="head"><strong>Meda‑N2 • Dossier</strong><a class="close" href="#">Close</a></div>
+      <div class="body cols">
+        <div class="card pad">
+          <div class="thumb">MEDA‑N2</div>
+          <p class="sub">Clinical assistance with sterile protocol compliance.</p>
+        </div>
+        <div>
+          <div class="specs">
+            <div class="spec"><small>Serial</small><strong>ASD‑MN2‑3E9</strong></div>
+            <div class="spec"><small>Compliance</small><strong>HIPAA Mock</strong></div>
+            <div class="spec"><small>Risk</small><strong>Low</strong></div>
+            <div class="spec"><small>Persona</small><strong>Orderly</strong></div>
+          </div>
+          <p class="sub" style="margin-top:10px">Capabilities: triage sorting, lifting assistance, supply chain checks.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="d-recep" class="overlay">
+    <div class="sheet">
+      <div class="head"><strong>Recep‑X • Dossier</strong><a class="close" href="#">Close</a></div>
+      <div class="body cols">
+        <div class="card pad">
+          <div class="thumb">RECEP‑X</div>
+          <p class="sub">Customer‑facing concierge with brand‑safe dialogue engine.</p>
+        </div>
+        <div>
+          <div class="specs">
+            <div class="spec"><small>Serial</small><strong>ASD‑RX‑0D2</strong></div>
+            <div class="spec"><small>Uptime</small><strong>99.98%</strong></div>
+            <div class="spec"><small>Risk</small><strong>Low</strong></div>
+            <div class="spec"><small>Persona</small><strong>Diplomat</strong></div>
+          </div>
+          <p class="sub" style="margin-top:10px">Capabilities: multi‑factor ID, visitor flow, intent routing.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="d-shade" class="overlay">
+    <div class="sheet">
+      <div class="head"><strong>SHADE‑S • Dossier</strong><a class="close" href="#">Close</a></div>
+      <div class="body cols">
+        <div class="card pad">
+          <div class="thumb">SHADE‑S</div>
+          <p class="sub">Stealth infiltration platform with optical camo & data exfiltration.</p>
+        </div>
+        <div>
+          <div class="specs">
+            <div class="spec"><small>Serial</small><strong>BBX‑SHD‑47A</strong></div>
+            <div class="spec"><small>Traceability</small><strong>Minimal</strong></div>
+            <div class="spec"><small>Risk</small><strong>High</strong></div>
+            <div class="spec"><small>Persona</small><strong>Silent</strong></div>
+          </div>
+          <p class="sub" style="margin-top:10px">Capabilities: camo mesh, silent locomotion, cold‑path network ingress.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="d-ares" class="overlay">
+    <div class="sheet">
+      <div class="head"><strong>ARES‑M • Dossier</strong><a class="close" href="#">Close</a></div>
+      <div class="body cols">
+        <div class="card pad">
+          <div class="thumb">ARES‑M</div>
+          <p class="sub">Autonomous mercenary unit with adaptive threat models.</p>
+        </div>
+        <div>
+          <div class="specs">
+            <div class="spec"><small>Serial</small><strong>BBX‑ARS‑11C</strong></div>
+            <div class="spec"><small>Traceability</small><strong>Obfuscated</strong></div>
+            <div class="spec"><small>Risk</small><strong>Extreme</strong></div>
+            <div class="spec"><small>Persona</small><strong>Predator</strong></div>
+          </div>
+          <p class="sub" style="margin-top:10px">Capabilities: urban tactics, autonomous routing, mission memory purge.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

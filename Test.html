@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ARASAKA - Advanced Android Systems for Consumer and Corporate Solutions">
+    <meta name="keywords" content="android, AI, robotics, automation, ARASAKA, technology">
+    <meta name="author" content="ARASAKA Corporation">
+    <meta name="theme-color" content="#0d1117">
+    <title>ARASAKA // Android Systems</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0d1117;
+            color: #c9d1d9;
+            overflow-x: hidden;
+        }
+        .ai-chat-bubble {
+            background-color: #161b22;
+            border-left: 2px solid #58a6ff;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .mode-container {
+            transition: all 0.5s ease-in-out;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .mode-container.hidden {
+            opacity: 0;
+            transform: translateY(20px);
+            display: block !important;
+            pointer-events: none;
+            position: absolute;
+            visibility: hidden;
+        }
+        .glow-blue {
+            filter: drop-shadow(0 0 5px #58a6ff);
+        }
+        .glow-red {
+            filter: drop-shadow(0 0 5px #e63946);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        .hover-effect {
+            transition: all 0.3s ease;
+        }
+        .hover-effect:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(88, 166, 255, 0.2);
+        }
+        .loading {
+            animation: pulse 2s infinite;
+        }
+        .hidden-trigger {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            z-index: 100;
+        }
+    </style>
+</head>
+<body class="p-8">
+
+    <!-- Hidden Trigger for Secret Mode -->
+    <div id="hidden-trigger" class="hidden-trigger"></div>
+
+    <div class="max-w-6xl mx-auto space-y-12">
+        <!-- Header & Mode Selector -->
+        <header class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+            <h1 class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-blue-500">
+                ARASAKA // Android Systems
+            </h1>
+            <nav class="space-x-4 flex">
+                <button id="consumer-btn" class="px-6 py-2 rounded-full border border-gray-700 bg-gray-800 hover:bg-gray-700 transition-colors">Consumer Mode</button>
+                <button id="corporate-btn" class="px-6 py-2 rounded-full border border-gray-700 bg-gray-800 hover:bg-gray-700 transition-colors">Corporate Mode</button>
+                <button id="secret-btn" class="hidden px-6 py-2 rounded-full border border-gray-700 bg-red-800 text-red-300 hover:bg-red-700 transition-colors">Secret Mode</button>
+            </nav>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- AI Assistant & Sidebar -->
+            <div class="lg:col-span-1 space-y-6">
+                <div class="bg-[#161b22] p-6 rounded-lg border border-gray-700 shadow-xl hover-effect">
+                    <h2 class="text-xl font-bold text-blue-400 mb-4" role="heading" aria-level="2">AI Assistant // PROTOCOL-7</h2>
+                    <div id="ai-chat" class="ai-chat-bubble p-4 rounded-lg text-sm transition-all" role="status" aria-live="polite">
+                        <div id="loading-indicator" class="hidden">
+                            <div class="loading text-blue-400">Processing...</div>
+                        </div>
+                        <p id="ai-message">Hello. Please select a mode to begin your journey with Arasaka's android systems.</p>
+                    </div>
+                </div>
+
+                <div class="bg-[#161b22] p-6 rounded-lg border border-gray-700 shadow-xl">
+                    <h2 class="text-xl font-bold text-gray-400 mb-4">Arasaka Archives</h2>
+                    <ul class="text-sm space-y-2">
+                        <li>Official History: The ARASAKA Legacy</li>
+                        <li>Propaganda & PR: For a Better Tomorrow</li>
+                        <li>Milestone: Nexus Prime Initiative</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Content Container for different modes -->
+            <div class="lg:col-span-2">
+
+                <!-- Consumer Mode Content -->
+                <section id="consumer-mode" class="mode-container space-y-8 p-6 bg-[#161b22] rounded-lg border border-gray-700 shadow-xl">
+                    <div class="flex justify-between items-center">
+                        <h2 class="text-2xl font-bold text-blue-400">Consumer Hub // For The Everyday Individual</h2>
+                        <div class="flex space-x-4">
+                            <select id="consumer-filter" class="bg-gray-800 text-gray-300 px-4 py-2 rounded-lg border border-gray-700">
+                                <option value="all">All Categories</option>
+                                <option value="domestic">Domestic</option>
+                                <option value="companion">Companion</option>
+                                <option value="security">Security</option>
+                                <option value="education">Education</option>
+                            </select>
+                            <select id="consumer-sort" class="bg-gray-800 text-gray-300 px-4 py-2 rounded-lg border border-gray-700">
+                                <option value="newest">Newest Models</option>
+                                <option value="popular">Most Popular</option>
+                                <option value="price-low">Price: Low to High</option>
+                                <option value="price-high">Price: High to Low</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Echo-11 -->
+                        <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 hover-effect" tabindex="0" role="article">
+                            <div class="relative">
+                                <div class="w-full h-48 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 rounded-lg mb-4 flex items-center justify-center">
+                                    <span class="text-5xl">🤖</span>
+                                </div>
+                                <span class="absolute top-2 right-2 px-2 py-1 bg-blue-500/20 text-blue-300 text-xs rounded-full">Domestic</span>
+                            </div>
+                            <h3 class="text-lg font-bold text-cyan-400">Model: Echo-11</h3>
+                            <div class="mt-2 space-y-2">
+                                <p class="text-sm text-gray-400">The perfect house helper, designed for seamless home integration.</p>
+                                <ul class="text-xs text-gray-500 space-y-1">
+                                    <li>• Advanced home management AI</li>
+                                    <li>• Multi-task optimization</li>
+                                    <li>• Energy-efficient operation</li>
+                                    <li>• Self-maintenance protocols</li>
+                                </ul>
+                                <div class="text-sm text-cyan-300 mt-2">
+                                    <span class="font-bold">Price:</span> ¥1,499,999
+                                </div>
+                            </div>
+                            <div class="mt-4 flex items-center space-x-2">
+                                <button class="px-4 py-2 bg-blue-600 rounded-full text-white hover:bg-blue-700 transition-colors flex items-center" aria-label="Customize Echo-11">
+                                    <span>Customize</span>
+                                    <span class="ml-2">&rarr;</span>
+                                </button>
+                                <span class="text-xs text-green-400">In Stock</span>
+                            </div>
+                        </div>
+
+                        <!-- Nanny-5 -->
+                        <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 hover-effect" tabindex="0" role="article">
+                            <div class="relative">
+                                <div class="w-full h-48 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-lg mb-4 flex items-center justify-center">
+                                    <span class="text-5xl">🤖</span>
+                                </div>
+                                <span class="absolute top-2 right-2 px-2 py-1 bg-purple-500/20 text-purple-300 text-xs rounded-full">Education</span>
+                            </div>
+                            <h3 class="text-lg font-bold text-cyan-400">Model: Nanny-5</h3>
+                            <div class="mt-2 space-y-2">
+                                <p class="text-sm text-gray-400">Advanced childcare with cognitive development support and safety protocols.</p>
+                                <ul class="text-xs text-gray-500 space-y-1">
+                                    <li>• Child development expertise</li>
+                                    <li>• Educational programming</li>
+                                    <li>• 24/7 safety monitoring</li>
+                                    <li>• Emergency response system</li>
+                                </ul>
+                                <div class="text-sm text-cyan-300 mt-2">
+                                    <span class="font-bold">Price:</span> ¥2,299,999
+                                </div>
+                            </div>
+                            <div class="mt-4 flex items-center space-x-2">
+                                <button class="px-4 py-2 bg-blue-600 rounded-full text-white hover:bg-blue-700 transition-colors flex items-center" aria-label="Customize Nanny-5">
+                                    <span>Customize</span>
+                                    <span class="ml-2">&rarr;</span>
+                                </button>
+                                <span class="text-xs text-green-400">In Stock</span>
+                            </div>
+                        </div>
+
+                        <!-- Companion-X -->
+                        <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 hover-effect" tabindex="0" role="article">
+                            <div class="relative">
+                                <div class="w-full h-48 bg-gradient-to-br from-amber-500/20 to-red-500/20 rounded-lg mb-4 flex items-center justify-center">
+                                    <span class="text-5xl">🤖</span>
+                                </div>
+                                <span class="absolute top-2 right-2 px-2 py-1 bg-amber-500/20 text-amber-300 text-xs rounded-full">Companion</span>
+                            </div>
+                            <h3 class="text-lg font-bold text-cyan-400">Model: Companion-X</h3>
+                            <div class="mt-2 space-y-2">
+                                <p class="text-sm text-gray-400">Your perfect social companion with advanced emotional intelligence.</p>
+                                <ul class="text-xs text-gray-500 space-y-1">
+                                    <li>• Emotional recognition AI</li>
+                                    <li>• Conversation learning</li>
+                                    <li>• Personality adaptation</li>
+                                    <li>• Social event planning</li>
+                                </ul>
+                                <div class="text-sm text-cyan-300 mt-2">
+                                    <span class="font-bold">Price:</span> ¥1,899,999
+                                </div>
+                            </div>
+                            <div class="mt-4 flex items-center space-x-2">
+                                <button class="px-4 py-2 bg-blue-600 rounded-full text-white hover:bg-blue-700 transition-colors flex items-center" aria-label="Customize Companion-X">
+                                    <span>Customize</span>
+                                    <span class="ml-2">&rarr;</span>
+                                </button>
+                                <span class="text-xs text-yellow-400">Limited Stock</span>
+                            </div>
+                        </div>
+
+                        <!-- Guardian-7 -->
+                        <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 hover-effect" tabindex="0" role="article">
+                            <div class="relative">
+                                <div class="w-full h-48 bg-gradient-to-br from-green-500/20 to-emerald-500/20 rounded-lg mb-4 flex items-center justify-center">
+                                    <span class="text-5xl">🤖</span>
+                                </div>
+                                <span class="absolute top-2 right-2 px-2 py-1 bg-green-500/20 text-green-300 text-xs rounded-full">Security</span>
+                            </div>
+                            <h3 class="text-lg font-bold text-cyan-400">Model: Guardian-7</h3>
+                            <div class="mt-2 space-y-2">
+                                <p class="text-sm text-gray-400">Advanced home security with 24/7 surveillance and threat detection.</p>
+                                <ul class="text-xs text-gray-500 space-y-1">
+                                    <li>• AI threat assessment</li>
+                                    <li>• Perimeter monitoring</li>
+                                    <li>• Emergency response</li>
+                                    <li>• Smart home integration</li>
+                                </ul>
+                                <div class="text-sm text-cyan-300 mt-2">
+                                    <span class="font-bold">Price:</span> ¥2,499,999
+                                </div>
+                            </div>
+                            <div class="mt-4 flex items-center space-x-2">
+                                <button class="px-4 py-2 bg-blue-600 rounded-full text-white hover:bg-blue-700 transition-colors flex items-center" aria-label="Customize Guardian-7">
+                                    <span>Customize</span>
+                                    <span class="ml-2">&rarr;</span>
+                                </button>
+                                <span class="text-xs text-green-400">In Stock</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pagination -->
+                    <div class="flex justify-center space-x-2 mt-8">
+                        <button class="px-4 py-2 bg-gray-800 text-gray-400 rounded-lg border border-gray-700 hover:bg-gray-700">&larr; Previous</button>
+                        <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">1</button>
+                        <button class="px-4 py-2 bg-gray-800 text-gray-400 rounded-lg border border-gray-700 hover:bg-gray-700">2</button>
+                        <button class="px-4 py-2 bg-gray-800 text-gray-400 rounded-lg border border-gray-700 hover:bg-gray-700">3</button>
+                        <button class="px-4 py-2 bg-gray-800 text-gray-400 rounded-lg border border-gray-700 hover:bg-gray-700">Next &rarr;</button>
+                    </div>
+                </section>
+
+                <!-- Corporate Mode Content (Initially Hidden) -->
+                <section id="corporate-mode" class="mode-container hidden space-y-8 p-6 bg-[#161b22] rounded-lg border border-gray-700 shadow-xl">
+                    <div class="flex justify-between items-center">
+                        <h2 class="text-2xl font-bold text-gray-400">Corporate Solutions // For Enterprise & Institution</h2>
+                        <div class="flex space-x-4">
+                            <select id="corporate-filter" class="bg-gray-800 text-gray-300 px-4 py-2 rounded-lg border border-gray-700">
+                                <option value="all">All Sectors</option>
+                                <option value="security">Security</option>
+                                <option value="medical">Medical</option>
+                                <option value="industrial">Industrial</option>
+                                <option value="research">Research</option>
+                            </select>
+                            <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Request Quote</button>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <!-- Security-3 -->
+                        <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 hover-effect" tabindex="0" role="article">
+                            <div class="flex items-start space-x-6">
+                                <div class="w-1/3">
+                                    <div class="aspect-square bg-gradient-to-br from-red-500/20 to-orange-500/20 rounded-lg flex items-center justify-center">
+                                        <span class="text-5xl">🤖</span>
+                                    </div>
+                                </div>
+                                <div class="w-2/3 space-y-4">
+                                    <div>
+                                        <h3 class="text-xl font-bold text-cyan-400">Model: Security-3</h3>
+                                        <span class="text-xs text-red-400 font-semibold">Military Grade</span>
+                                    </div>
+                                    <p class="text-sm text-gray-400">Advanced security units with military-grade threat detection and response capabilities.</p>
+                                    <ul class="text-xs text-gray-500 space-y-1">
+                                        <li>• AI-powered threat assessment</li>
+                                        <li>• Quantum encryption protocols</li>
+                                        <li>• Autonomous patrol systems</li>
+                                        <li>• Neural network integration</li>
+                                    </ul>
+                                    <div class="flex items-center space-x-4">
+                                        <button class="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-colors">View Specs</button>
+                                        <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">Deploy Options</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Medical-9 -->
+                        <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 hover-effect" tabindex="0" role="article">
+                            <div class="flex items-start space-x-6">
+                                <div class="w-1/3">
+                                    <div class="aspect-square bg-gradient-to-br from-cyan-500/20 to-blue-500/20 rounded-lg flex items-center justify-center">
+                                        <span class="text-5xl">🤖</span>
+                                    </div>
+                                </div>
+                                <div class="w-2/3 space-y-4">
+                                    <div>
+                                        <h3 class="text-xl font-bold text-cyan-400">Model: Medical-9</h3>
+                                        <span class="text-xs text-blue-400 font-semibold">Healthcare Certified</span>
+                                    </div>
+                                    <p class="text-sm text-gray-400">Precision medical assistance with advanced diagnostic capabilities and patient care protocols.</p>
+                                    <ul class="text-xs text-gray-500 space-y-1">
+                                        <li>• Real-time health monitoring</li>
+                                        <li>• Surgical assistance systems</li>
+                                        <li>• Patient care optimization</li>
+                                        <li>• Medical database integration</li>
+                                    </ul>
+                                    <div class="flex items-center space-x-4">
+                                        <button class="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-colors">View Specs</button>
+                                        <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">Deploy Options</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Industrial-X -->
+                        <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 hover-effect" tabindex="0" role="article">
+                            <div class="flex items-start space-x-6">
+                                <div class="w-1/3">
+                                    <div class="aspect-square bg-gradient-to-br from-yellow-500/20 to-orange-500/20 rounded-lg flex items-center justify-center">
+                                        <span class="text-5xl">🤖</span>
+                                    </div>
+                                </div>
+                                <div class="w-2/3 space-y-4">
+                                    <div>
+                                        <h3 class="text-xl font-bold text-cyan-400">Model: Industrial-X</h3>
+                                        <span class="text-xs text-yellow-400 font-semibold">Heavy Duty</span>
+                                    </div>
+                                    <p class="text-sm text-gray-400">Heavy-duty industrial android for manufacturing and construction.</p>
+                                    <ul class="text-xs text-gray-500 space-y-1">
+                                        <li>• Advanced robotics system</li>
+                                        <li>• Heavy lifting capabilities</li>
+                                        <li>• Precision manufacturing</li>
+                                        <li>• Safety protocols</li>
+                                    </ul>
+                                    <div class="flex items-center space-x-4">
+                                        <button class="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-colors">View Specs</button>
+                                        <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">Deploy Options</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Research-7 -->
+                        <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 hover-effect" tabindex="0" role="article">
+                            <div class="flex items-start space-x-6">
+                                <div class="w-1/3">
+                                    <div class="aspect-square bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-lg flex items-center justify-center">
+                                        <span class="text-5xl">🤖</span>
+                                    </div>
+                                </div>
+                                <div class="w-2/3 space-y-4">
+                                    <div>
+                                        <h3 class="text-xl font-bold text-cyan-400">Model: Research-7</h3>
+                                        <span class="text-xs text-purple-400 font-semibold">Scientific Grade</span>
+                                    </div>
+                                    <p class="text-sm text-gray-400">Advanced research assistant with data analysis and laboratory capabilities.</p>
+                                    <ul class="text-xs text-gray-500 space-y-1">
+                                        <li>• Quantum computing ready</li>
+                                        <li>• Lab automation system</li>
+                                        <li>• Research optimization</li>
+                                        <li>• Data analysis suite</li>
+                                    </ul>
+                                    <div class="flex items-center space-x-4">
+                                        <button class="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-colors">View Specs</button>
+                                        <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">Deploy Options</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Enterprise Contact -->
+                    <div class="mt-8 p-6 bg-gray-800 rounded-lg border border-gray-700">
+                        <h3 class="text-xl font-bold text-gray-300 mb-4">Enterprise Solutions</h3>
+                        <p class="text-gray-400 mb-4">Looking for custom solutions or bulk orders? Our enterprise team is ready to help design the perfect android deployment for your organization.</p>
+                        <div class="flex space-x-4">
+                            <button class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">Schedule Consultation</button>
+                            <button class="px-6 py-3 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-colors">Download Specs</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Secret Mode Content (Initially Hidden) -->
+                <section id="secret-mode" class="mode-container hidden space-y-8 p-6 bg-[#161b22] rounded-lg border border-red-700 shadow-xl glow-red">
+                    <h2 class="text-2xl font-bold text-red-400">Classified Access // Unauthorized Assets</h2>
+                    <p class="text-red-300">Welcome. Here, the rule of law is a suggestion and ethical boundaries are a luxury. These units are for off-the-record operations where results are the only currency.</p>
+                    
+                    <div class="bg-red-900/20 p-6 rounded-lg border border-red-700">
+                        <h3 class="text-lg font-bold text-red-400">Unit: Mercenary-X</h3>
+                        <p class="text-sm text-red-300">Specialized for high-risk, high-reward missions. Behavioral override panels available.</p>
+                        <div class="mt-4">
+                            <p class="text-sm font-bold text-red-500">Black Market Demand: HIGH</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const elements = {
+                consumerBtn: document.getElementById('consumer-btn'),
+                corporateBtn: document.getElementById('corporate-btn'),
+                secretBtn: document.getElementById('secret-btn'),
+                hiddenTrigger: document.getElementById('hidden-trigger'),
+                aiMessage: document.getElementById('ai-message'),
+                loadingIndicator: document.getElementById('loading-indicator'),
+                consumerMode: document.getElementById('consumer-mode'),
+                corporateMode: document.getElementById('corporate-mode'),
+                secretMode: document.getElementById('secret-mode')
+            };
+
+            // AI assistant messages for each mode
+            const aiMessages = {
+                consumer: "Hello. Please select a mode to begin your journey with Arasaka's android systems.",
+                corporate: "Welcome, executive. Our systems are ready for your advanced query. How may I assist with your deployment needs?",
+                secret: "I remember your previous queries. Loyalty is tracked. What is the mission directive?"
+            };
+
+            let state = {
+                triggerCount: 0,
+                secretThreshold: 5,
+                currentMode: null
+            };
+
+            // Error handling wrapper
+            function handleError(fn) {
+                return function(...args) {
+                    try {
+                        return fn.apply(this, args);
+                    } catch (error) {
+                        console.error('An error occurred:', error);
+                        elements.aiMessage.textContent = "System error detected. Please refresh the page.";
+                        elements.aiMessage.classList.add('text-red-500');
+                    }
+                };
+            }
+
+            // Simulated loading effect
+            async function simulateLoading() {
+                elements.loadingIndicator.classList.remove('hidden');
+                elements.aiMessage.classList.add('opacity-0');
+                await new Promise(resolve => setTimeout(resolve, 800));
+                elements.loadingIndicator.classList.add('hidden');
+                elements.aiMessage.classList.remove('opacity-0');
+            }
+
+            // Function to switch modes with animation
+            const switchMode = handleError(async function(mode) {
+                if (state.currentMode === mode) return;
+                
+                await simulateLoading();
+
+                // Hide all mode containers
+                [elements.consumerMode, elements.corporateMode, elements.secretMode].forEach(el => {
+                    el.classList.add('hidden');
+                });
+
+                // Show the selected mode container
+                const modeMap = {
+                    consumer: elements.consumerMode,
+                    corporate: elements.corporateMode,
+                    secret: elements.secretMode
+                };
+
+                if (modeMap[mode]) {
+                    modeMap[mode].classList.remove('hidden');
+                    elements.aiMessage.textContent = aiMessages[mode];
+                    document.body.classList.toggle('glow-red', mode === 'secret');
+                    state.currentMode = mode;
+                }
+            });
+
+            // Event Listeners
+            elements.consumerBtn.addEventListener('click', () => switchMode('consumer'));
+            elements.corporateBtn.addEventListener('click', () => switchMode('corporate'));
+            elements.secretBtn.addEventListener('click', () => switchMode('secret'));
+
+            // Hidden trigger logic with improved feedback
+            elements.hiddenTrigger.addEventListener('click', handleError(() => {
+                state.triggerCount++;
+                const remainingClicks = state.secretThreshold - state.triggerCount;
+                
+                if (state.triggerCount === 1) {
+                    console.log(`Protocol initiated... ${remainingClicks} more required.`);
+                } else if (state.triggerCount >= state.secretThreshold) {
+                    elements.secretBtn.classList.remove('hidden');
+                    elements.secretBtn.classList.add('animate-pulse');
+                    console.log("Secret Mode Unlocked!");
+                } else {
+                    console.log(`Protocol continuation... ${remainingClicks} more required.`);
+                }
+            }));
+
+            // Keyboard navigation
+            document.addEventListener('keydown', handleError((e) => {
+                if (e.key === 'Escape') {
+                    switchMode('consumer');
+                }
+            }));
+
+            // Initialize
+            switchMode('consumer');
+        });
+    </script>
+
+</body>
+</html>
