@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ARASAKA Login | Android Systems Division</title>
+  <link rel="stylesheet" href="css/login.css">
+  <link rel="icon" href="images/logo1.png">
+</head>
+<body style="background: linear-gradient(120deg, #0ff2 0%, #111 100%); min-height: 100vh;">
+  <div class="login-container">
+    <h2>ARASAKA LOGIN</h2>
+    <form id="loginForm" autocomplete="off">
+      <div>
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" required autofocus>
+      </div>
+      <div>
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required>
+      </div>
+      <div class="error" id="loginError"></div>
+      <button type="submit">Login</button>
+    </form>
+  </div>
+  <script src="js/login.js"></script>
+</body>
+</html>
