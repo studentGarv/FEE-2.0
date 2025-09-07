@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Companion Series | ARASAKA Android Systems</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        inter: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: white;
+            color: #1f2937;
+            position: relative;
+            background-image: radial-gradient(#9ca3af 1px, transparent 1px), radial-gradient(#9ca3af 1px, white 1px);
+            background-size: 30px 30px;
+            background-position: 0 0, 15px 15px;
+            background-attachment: fixed;
+        }
+
+        .btn-primary {
+            padding: 0.5rem 1.5rem;
+            border-radius: 9999px;
+            border: 1px solid #e5e7eb;
+            color: #1f2937;
+            transition: all 0.2s;
+        }
+
+        .btn-secondary {
+            padding: 0.5rem 1.5rem;
+            border-radius: 9999px;
+            border: 1px solid #e5e7eb;
+            background-color: #f3f4f6;
+            color: #1f2937;
+            transition: all 0.2s;
+        }
+
+        .btn-secondary:hover {
+            background-color: #e5e7eb;
+        }
+
+        .card {
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            border: 1px solid #e5e7eb;
+            background-color: #f9fafb;
+        }
+    </style>
+    <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+    <div class="w-full mx-auto space-y-0 px-8 md:px-16">
+        <!-- Header -->
+        <header class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100">
+            <div class="max-w-[1600px] mx-auto pt-6 pb-6 px-8 md:px-16">
+                <div class="flex justify-between items-center">
+                    <!-- Left Navigation -->
+                    <nav class="flex space-x-8">
+                        <a href="index.html" class="text-sm font-medium hover:text-blue-600 transition-colors">Home</a>
+                        <a href="#" class="text-sm font-medium hover:text-blue-600 transition-colors">Login</a>
+                    </nav>
+                
+                <!-- Centered Logo -->
+                <div class="flex items-center space-x-4">
+                    <img src="./images/logo1.png" alt="ARASAKA Logo" class="h-12 w-auto">
+                    <img src="./images/name1.png" alt="ARASAKA" class="h-6 w-auto">
+                </div>
+                
+                <!-- Right Navigation -->
+                <nav class="flex space-x-8">
+                    <a href="#" class="text-sm font-medium hover:text-blue-600 transition-colors">Archives</a>
+                    <a href="#" class="text-sm font-medium hover:text-blue-600 transition-colors">Labs</a>
+                </nav>
+            </div>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="relative overflow-hidden pt-32 pb-16">
+            <div class="max-w-[1600px] mx-auto">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div class="space-y-8">
+                        <div class="space-y-4">
+                            <span class="text-sm font-medium text-blue-600 uppercase tracking-wide">Consumer Series</span>
+                            <h1 class="text-5xl font-bold text-gray-900 leading-tight">
+                                Companion<br>Series
+                            </h1>
+                            <p class="text-xl text-gray-600 leading-relaxed">
+                                Advanced emotional AI companions designed for families and elderly care. 
+                                Experience genuine connection with androids that understand, learn, and grow with you.
+                            </p>
+                        </div>
+                        
+                        <div class="flex space-x-4">
+                            <button class="btn-secondary">Customize Your Companion</button>
+                            <button class="btn-primary">Learn More</button>
+                        </div>
+                    </div>
+                    
+                    <div class="relative">
+                        <div class="w-full h-96 bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl flex items-center justify-center">
+                            <div class="text-8xl text-blue-600">🤖</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="py-16">
+            <div class="max-w-[1600px] mx-auto">
+                <div class="text-center space-y-4 mb-12">
+                    <h2 class="text-3xl font-bold text-gray-900">Key Features</h2>
+                    <p class="text-gray-600 text-lg">Advanced capabilities designed for emotional connection</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="card text-center space-y-4">
+                        <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto">
+                            <span class="text-2xl text-blue-600">❤️</span>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900">Emotional Intelligence</h3>
+                        <p class="text-gray-600">Advanced empathy algorithms that recognize and respond to human emotions with genuine care and understanding.</p>
+                    </div>
+                    
+                    <div class="card text-center space-y-4">
+                        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto">
+                            <span class="text-2xl text-green-600">🧠</span>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900">Adaptive Learning</h3>
+                        <p class="text-gray-600">Continuously learns your preferences, habits, and needs to provide increasingly personalized companionship.</p>
+                    </div>
+                    
+                    <div class="card text-center space-y-4">
+                        <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto">
+                            <span class="text-2xl text-purple-600">🔒</span>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900">Privacy First</h3>
+                        <p class="text-gray-600">All personal data is processed locally with military-grade encryption to ensure your privacy and security.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Specifications Section -->
+        <section class="py-16 bg-gray-50 -mx-8 md:-mx-16 px-8 md:px-16">
+            <div class="max-w-[1600px] mx-auto">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                    <div class="space-y-8">
+                        <h2 class="text-3xl font-bold text-gray-900">Technical Specifications</h2>
+                        
+                        <div class="space-y-6">
+                            <div class="flex justify-between items-center py-3 border-b border-gray-200">
+                                <span class="font-medium text-gray-900">Empathy Level</span>
+                                <span class="text-blue-600 font-semibold">High</span>
+                            </div>
+                            <div class="flex justify-between items-center py-3 border-b border-gray-200">
+                                <span class="font-medium text-gray-900">Battery Life</span>
+                                <span class="text-blue-600 font-semibold">72 hours</span>
+                            </div>
+                            <div class="flex justify-between items-center py-3 border-b border-gray-200">
+                                <span class="font-medium text-gray-900">Learning Speed</span>
+                                <span class="text-blue-600 font-semibold">Adaptive</span>
+                            </div>
+                            <div class="flex justify-between items-center py-3 border-b border-gray-200">
+                                <span class="font-medium text-gray-900">Voice Recognition</span>
+                                <span class="text-blue-600 font-semibold">99.7% Accuracy</span>
+                            </div>
+                            <div class="flex justify-between items-center py-3 border-b border-gray-200">
+                                <span class="font-medium text-gray-900">Memory Storage</span>
+                                <span class="text-blue-600 font-semibold">10TB Neural</span>
+                            </div>
+                            <div class="flex justify-between items-center py-3 border-b border-gray-200">
+                                <span class="font-medium text-gray-900">Warranty</span>
+                                <span class="text-blue-600 font-semibold">5 Years</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-8">
+                        <h3 class="text-2xl font-bold text-gray-900">Available Models</h3>
+                        
+                        <div class="space-y-4">
+                            <div class="card">
+                                <h4 class="font-semibold text-gray-900 mb-2">COMPANION-C1 (Child Care)</h4>
+                                <p class="text-gray-600 text-sm mb-3">Specialized for child interaction and educational support</p>
+                                <div class="text-2xl font-bold text-blue-600">$89,999</div>
+                            </div>
+                            
+                            <div class="card">
+                                <h4 class="font-semibold text-gray-900 mb-2">COMPANION-E1 (Elder Care)</h4>
+                                <p class="text-gray-600 text-sm mb-3">Enhanced medical monitoring and emergency response</p>
+                                <div class="text-2xl font-bold text-blue-600">$124,999</div>
+                            </div>
+                            
+                            <div class="card">
+                                <h4 class="font-semibold text-gray-900 mb-2">COMPANION-F1 (Family)</h4>
+                                <p class="text-gray-600 text-sm mb-3">Versatile companion for all family members</p>
+                                <div class="text-2xl font-bold text-blue-600">$149,999</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="py-16">
+            <div class="max-w-[1600px] mx-auto text-center space-y-8">
+                <h2 class="text-3xl font-bold text-gray-900">Ready to Welcome Your Companion?</h2>
+                <p class="text-gray-600 text-lg">Start your journey with an ARASAKA Companion today</p>
+                <div class="flex justify-center space-x-4">
+                    <button class="btn-secondary">Schedule Demo</button>
+                    <button class="btn-primary">Configure Now</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Spacing -->
+        <div class="h-16"></div>
+    </div>
+
+    <script src="js/login-overlay.js"></script>
+</body>
+</html>

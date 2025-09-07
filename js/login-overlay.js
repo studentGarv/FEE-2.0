@@ -1,7 +1,7 @@
 // Overlay login logic for index.html
 (function() {
   // Only show overlay if not logged in
-  if (localStorage.getItem('loggedIn') === 'true') return;
+  if (localStorage.getItem('loggedIn') === 'true' || localStorage.getItem('loggedIn') === 'guest') return;
 
   // Create overlay
   const overlay = document.createElement('div');
@@ -21,6 +21,7 @@
         </div>
         <div class="error" id="loginError"></div>
         <button type="submit">Login</button>
+        <button type="button" id="skipLogin" class="skip-btn">Continue as Guest</button>
       </form>
     </div>
   `;
@@ -43,12 +44,16 @@
     .login-overlay-form {
       z-index: 1; box-shadow: 0 0 32px #0ff8, 0 0 8px #fff2;
       animation: loginPop 0.5s cubic-bezier(.7,-0.2,.3,1.4);
+      position: relative;
+    }
+    #loginOverlay * {
+      pointer-events: auto !important;
     }
     @keyframes loginPop {
       0% { transform: scale(0.8) translateY(40px); opacity: 0; }
       100% { transform: scale(1) translateY(0); opacity: 1; }
     }
-    body.login-locked *:not(#loginOverlay):not(script):not(style) {
+    body.login-locked *:not(#loginOverlay):not(#loginOverlay *):not(script):not(style) {
       pointer-events: none !important;
       user-select: none !important;
       filter: none !important;
@@ -60,6 +65,15 @@
   // Login logic
   const loginForm = overlay.querySelector('#loginForm');
   const errorMsg = overlay.querySelector('#loginError');
+  const skipBtn = overlay.querySelector('#skipLogin');
+  
+  // Skip login functionality
+  skipBtn.addEventListener('click', function() {
+    localStorage.setItem('loggedIn', 'guest');
+    overlay.remove();
+    document.body.classList.remove('login-locked');
+  });
+  
   loginForm.addEventListener('submit', function(e) {
     e.preventDefault();
     const username = loginForm.username.value.trim();
